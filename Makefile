@@ -4,7 +4,7 @@ clean:
 		rm ssh_keys/*
 
 keygen:
-		ssh-keygen -t rsa -b 4096 -C "deployer@example.com" -f ssh_keys/deployer
+		ssh-keygen -t rsa -b 4096 -C "deployer@mapr.com" -f ssh_keys/deployer
 
 build:
 		docker build . -t robmorgan/jenkins2

@@ -7,7 +7,7 @@ Note: The global Jenkins security has been disabled.
 1. Clone the Repo
 
 ```
-$ git clone https://github.com/robmorgan/jenkins2-docker
+$ git clone https://github.com/adityagnrao/jenkins2-docker
 $ cd jenkins2-docker
 ```
 
@@ -30,5 +30,5 @@ $ make build
 
 ```
 $ make run
-$ open http://localhost:8080
+$ open http://localhost:1990
 ```
