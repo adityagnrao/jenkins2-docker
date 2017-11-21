@@ -1,4 +1,4 @@
-FROM jenkins:latest
+FROM jenkins/jenkins:lts
 
 # Install build tools
 USER root
@@ -6,7 +6,7 @@ USER root
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get install -y curl git-core unzip php5-cli && rm -rf /var/lib/apt/lists/* \
+    && apt-get install -y curl git-core unzip php-cli && rm -rf /var/lib/apt/lists/* \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # copy plugins
@@ -35,3 +35,7 @@ RUN /usr/local/bin/plugins.sh /usr/share/jenkins/ref/plugins.txt
 
 # disable initial setup wizard
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
+
+ENV JENKINS_OPTS --httpPort=1990 
+EXPOSE 1990
+ENV JENKINS_SLAVE_AGENT_PORT 49001

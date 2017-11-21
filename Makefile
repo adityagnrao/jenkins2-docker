@@ -10,4 +10,4 @@ build:
 		docker build . -t robmorgan/jenkins2
 
 run:
-	 	docker run -ti -p 8080:8080 -p 50000:50000 robmorgan/jenkins2
+	 	docker run -ti -p 1990:1990 -p 49000:49000 robmorgan/jenkins2
