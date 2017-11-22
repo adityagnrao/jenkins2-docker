@@ -39,6 +39,3 @@ ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
 ENV JENKINS_OPTS --httpPort=1990 
 EXPOSE 1990
 ENV JENKINS_SLAVE_AGENT_PORT 49000
-COPY ssh-config /usr/share/jenkins/ref/.ssh/config
-COPY ssh_keys/deployer /usr/share/jenkins/ref/.ssh/id_rsa
-COPY ssh_keys/deployer.pub /usr/share/jenkins/ref/.ssh/id_rsa.pub
