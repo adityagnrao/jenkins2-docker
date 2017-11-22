@@ -1,0 +1,3 @@
+COPY ssh-config /usr/share/jenkins/ref/.ssh/config
+COPY ssh_keys/deployer /usr/share/jenkins/ref/.ssh/id_rsa
+COPY ssh_keys/deployer.pub /usr/share/jenkins/ref/.ssh/id_rsa.pub
