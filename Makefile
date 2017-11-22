@@ -7,7 +7,7 @@ keygen:
 		ssh-keygen -t rsa -b 4096 -C "deployer@mapr.com" -f ssh_keys/deployer
 
 build:
-		docker build . -t robmorgan/jenkins2
+		docker build . -t `git rev-parse HEAD`/jenkins2 --cache-from `git rev-parse HEAD`/jenkins2:latest
 
 run:
-	 	docker run -ti -p 1990:1990 -p 49000:49000 robmorgan/jenkins2
+	 	docker run -d -p 1990:1990 -p 49000:49000 `git rev-parse HEAD`/jenkins2 2>&1
