@@ -17,9 +17,9 @@ COPY config.xml  /usr/share/jenkins/ref/config.xml
 
 # import ssh keys and credentials
 COPY credentials.xml /usr/share/jenkins/ref/credentials.xml
-COPY ssh-config /usr/share/jenkins/ref/.ssh/config
-COPY ssh_keys/deployer /usr/share/jenkins/ref/.ssh/id_rsa
-COPY ssh_keys/deployer.pub /usr/share/jenkins/ref/.ssh/id_rsa.pub
+#COPY ssh-config /usr/share/jenkins/ref/.ssh/config
+#COPY ssh_keys/deployer /usr/share/jenkins/ref/.ssh/id_rsa
+#COPY ssh_keys/deployer.pub /usr/share/jenkins/ref/.ssh/id_rsa.pub
 
 # import jobs
 COPY 1-phinx.xml /usr/share/jenkins/ref/jobs/Phinx/config.xml
