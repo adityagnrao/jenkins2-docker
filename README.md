@@ -1,8 +1,10 @@
 # Jenkins 2 Docker
 
 This is the repository for a Jenkins 2 job management,
+
 Add jobs to the jenkins,
 commit them and 
+
 get the image ready from docker hub at adityagnrao/jenkins2-docker.
 
 Note: The global Jenkins security has been disabled.
