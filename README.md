@@ -37,3 +37,41 @@ $ make build
 $ make run
 $ open http://localhost:1990
 ```
+
+
+Steps to commit a newly added jenkins job
+
+1. Let's say the newly created job is "TestJob"
+
+2. The jenkins-home directory in docker is volume mounted under jenkins2-docker/jenkins_home
+
+3. commit the job's config 
+
+```
+git commit jenkins_home/jobs/TestJob/config.xml
+```
+
+	Note :  in case you want this job to be in a new branch, 
+
+	a. create a new branch 
+
+	``` 
+		git branch newbranch
+	```
+
+	b. modify the Makefile to have the tag as newbranch in all docker img references
+
+	```
+		Ex:adityagnrao/jenkins2-docker:latest -> adityagnrao/jenkins2-docker:newbranch 
+	```
+
+	c. commit both the job's config as well as the modified Makefile
+
+	```
+		git commit jenkins_home/jobs/TestJob/config.xml
+		git commit Makefile
+	```
+	
+4. git push https://github.com/adityagnrao/jenkins2-docker
+
+
