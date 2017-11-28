@@ -22,7 +22,7 @@ Note: The global Jenkins security has been disabled.
  $ make keygen
  ```
 
- Note: Deploy keys are usually not protected by a passphrase, making the key
+Note: Deploy keys are usually not protected by a passphrase, making the key
 easily accessible if the server is compromised.
 
 3. Build the Docker image
@@ -38,7 +38,7 @@ easily accessible if the server is compromised.
  $ open http://localhost:1990
  ```
 
-###Steps to commit a newly added jenkins job : 
+### Steps to commit a newly added jenkins job : 
 
    1. Let's say the newly created job is "TestJob",
 
@@ -46,29 +46,29 @@ easily accessible if the server is compromised.
 
    2. commit the job's config
 
-     ```
-     git commit jenkins_home/jobs/TestJob/config.xml
-     ```
+      ```
+      git commit jenkins_home/jobs/TestJob/config.xml
+      ```
 
-     Note :  in case you want this job to be in a new branch,
+      Note :  in case you want this job to be in a new branch,
 
       a. create a new branch
 
-      ```
-      git branch newbranch
-      ```
+       ```
+       git branch newbranch
+       ```
 
       b. modify the Makefile to have the tag as newbranch in all docker img references
 
-     ```
-     Ex: adityagnrao/jenkins2-docker:latest -> adityagnrao/jenkins2-docker:newbranch
-     ```
+       ```
+       Ex: adityagnrao/jenkins2-docker:latest -> adityagnrao/jenkins2-docker:newbranch
+       ```
 
       c. commit both the job's config as well as the modified Makefile
 
-      ```
-      git commit jenkins_home/jobs/TestJob/config.xml Makefile
-      ```
+       ```
+       git commit jenkins_home/jobs/TestJob/config.xml Makefile
+       ```
  
    3. git push 
        
