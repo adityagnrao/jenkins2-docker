@@ -7,7 +7,7 @@ keygen:
 		ssh-keygen -t rsa -b 4096 -C "deployer@mapr.com" -f ssh_keys/deployer
 
 build:
-		docker build . -t adityagnrao/jenkins2-docker:v6.0.0-stress --cache-from adityagnrao/jenkins2-docker:v6.0.0-stress
+		docker build . -t adityagnrao/jenkins2-docker:v6.0.0-stress
 		mkdir -p `pwd`/jenkins_home/jobs/
 		chmod -R 777 `pwd`/jenkins_home/
 
