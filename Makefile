@@ -14,3 +14,5 @@ build:
 run:
 	 	docker run -d -p 1990:1990 -p 49000:49000 -v `pwd`/jenkins_home/:/var/jenkins_home \
 		adityagnrao/jenkins2-docker 2>&1
+up-plug:
+		./update-plugins.sh	
