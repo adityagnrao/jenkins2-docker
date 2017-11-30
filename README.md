@@ -47,6 +47,7 @@ easily accessible if the server is compromised.
    2. commit the job's config
 
       ```
+      git add jenkins_home/jobs/TestJob/config.xml
       git commit jenkins_home/jobs/TestJob/config.xml
       ```
 
@@ -67,6 +68,7 @@ easily accessible if the server is compromised.
       c. commit both the job's config as well as the modified Makefile
 
        ```
+       git add jenkins_home/jobs/TestJob/config.xml Makefile
        git commit jenkins_home/jobs/TestJob/config.xml Makefile
        ```
  
@@ -75,3 +77,34 @@ easily accessible if the server is compromised.
        ```
        git push https://github.com/adityagnrao/jenkins2-docker
        ```
+
+#### Steps to add new/update plugins 
+   1. Install or update plugins
+      
+      ```
+      http://localhost:1990/pluginManager/
+      ```
+   
+   2. Make sure the jenkins is up with all plugin changes
+   
+   3. update plugins - 
+   
+      runs a curl command to get the latest list of plugins installed
+      and updates the plugins.txt
+      
+      ```
+      $ make up-plug
+      ```
+   4. commit plugins.txt
+      
+      ```
+      git add plugins.txt
+      git commit plugins.txt
+      ```
+   5. git push
+
+       ```
+       git push https://github.com/adityagnrao/jenkins2-docker
+       ```
+
+
