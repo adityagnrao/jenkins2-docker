@@ -1,4 +1,4 @@
-FROM adityagnrao/jenkins2-docker
+FROM jenkins/jenkins
 
 # Install build tools
 USER root

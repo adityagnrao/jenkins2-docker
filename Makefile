@@ -8,7 +8,7 @@ keygen:
 
 build:
 		docker build . -t adityagnrao/jenkins2-docker:v6.0.0-stress --cache-from adityagnrao/jenkins2-docker:v6.0.0-stress
-		mkdir -p `pwd`/jenkins_home/jobs/
+		mkdir -p `pwd`/jenkins_home/
 		chmod -R 777 `pwd`/jenkins_home/
 
 run:
