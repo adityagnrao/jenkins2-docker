@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.15">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.2.5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.2.5">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.42">
+    <script>pipeline {
+
+  // agent defines where the pipeline will run.
+  agent any
+  environment {
+    SECURE = &quot;TRUE&quot;
+  }
+  stages {
+      
+    stage(&apos;install stage 1 - prereq for stress-pipeline scripts&apos;) {
+      steps {
+        echo &quot;clean up old install if any&quot;
+        sh &apos;rm -rf /var/jenkins_home/stress-pipeline&apos;
+      }
+    }
+    
+    stage(&apos;install stage 2 - scripts setup stage&apos;) {
+      steps {
+        echo &quot;stage 2 steps&quot;
+        dir (&apos;/var/jenkins_home/stress-pipeline/cluster-1&apos;) {
+            git &apos;https://github.com/rohanjayaraj/mapr-cluster-scripts&apos;
+            configFileProvider([configFile(fileId: &apos;cluster-1-roles&apos;, 
+                    targetLocation: &apos;/var/jenkins_home/stress-pipeline/cluster-1/roles/cluster-1-roles&apos;)]) {}
+        }
+        dir (&apos;/var/jenkins_home/stress-pipeline/cluster-2&apos;) {
+            git &apos;https://github.com/rohanjayaraj/mapr-cluster-scripts&apos;
+            configFileProvider([configFile(fileId: &apos;cluster-2-roles&apos;, 
+                    targetLocation: &apos;/var/jenkins_home/stress-pipeline/cluster-2/roles/cluster-2-roles&apos;)]) {}
+        }
+        dir(&apos;config-scripts&apos;) {
+            //TODO: Devops framework    
+            git &apos;git@github.com:ssinha3/private-devops-automation-framework.git&apos;
+        }
+      }
+    }
+    
+    stage(&apos;install stage 3 - stress-pipeline un-installing src and replica&apos;) {
+      steps {
+          ws(&apos;/var/jenkins_home/stress-pipeline/cluster-1&apos;) {
+            echo &quot;un-installing cluster 1&quot;
+            sh &apos;./mapr_setup.sh -c=cluster-1-roles -u -qs -f -s -m=2 -sp=2&apos; 
+          }
+          ws(&apos;/var/jenkins_home/stress-pipeline/cluster-2&apos;) {
+            echo &quot;un-installing cluster 2&quot;
+            sh &apos;./mapr_setup.sh -c=cluster-2-roles -u -qs -f -s -m=2 -sp=2&apos; 
+          }
+      }
+    }
+    
+    stage(&apos;install stage 4 - installing src and replica&apos;) {
+      steps {
+          ws(&apos;/root/stress-pipeline/cluster-scripts/cluster-1&apos;) {
+            echo &quot;installing cluster 1&quot;
+            sh &apos;./mapr_setup.sh -c=cluster-1-roles -i -qs -f -s -m=2 -sp=2&apos; 
+          }
+          ws(&apos;/root/stress-pipeline/cluster-scripts/cluster-2&apos;) {
+            echo &quot;installing cluster 2&quot;
+            sh &apos;./mapr_setup.sh -c=cluster-2-roles -i -qs -f -s -m=2 -sp=2&apos; 
+          }
+      }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
