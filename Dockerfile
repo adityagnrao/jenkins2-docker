@@ -3,11 +3,11 @@ FROM jenkins/jenkins
 # Install build tools
 USER root
 
-RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
-
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get install -y curl git-core unzip php-cli curl wget tar vim gawk && rm -rf /var/lib/apt/lists/* \
+    && apt-get install -y curl git-core unzip php-cli curl wget tar vim gawk sudo && rm -rf /var/lib/apt/lists/* \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 # copy plugins
 COPY plugins.txt /usr/share/jenkins/ref/
