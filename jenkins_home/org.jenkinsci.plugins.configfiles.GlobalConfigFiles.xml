@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<org.jenkinsci.plugins.configfiles.GlobalConfigFiles plugin="config-file-provider@2.16.4">
+  <configs class="sorted-set">
+    <comparator class="org.jenkinsci.plugins.configfiles.GlobalConfigFiles$1"/>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-1-roles</id>
+      <name>cluster-1-roles</name>
+      <comment></comment>
+      <content>10.10.10.200,mapr-cldb,mapr-fileserver,mapr-webserver,mapr-webserver2,mapr-zookeeper,mapr-resourcemanager,mapr-nodemanager,mapr-historyserver,mapr-opentsdb,mapr-grafana,mapr-collectd
+10.10.10.[200,210],mapr-cldb,mapr-fileserver,mapr-webserver,mapr-webserver2,mapr-zookeeper,mapr-resourcemanager,mapr-nodemanager,mapr-collect,mapr-opentsdbd
+10.10.10.[200,210],mapr-fileserver,mapr-nodemanager,mapr-drill-1*,mapr-nfs,mapr-gateway,mapr-collectd
+10.10.10.[200,210],mapr-fileserver,mapr-nodemanager,mapr-drill-1*,mapr-nfs,mapr-collectd
+10.10.10.[200,210],mapr-fileserver,mapr-nodemanager,mapr-drill-1*,mapr-nfs,mapr-collectd</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-2-roles</id>
+      <name>cluster-2-roles</name>
+      <comment></comment>
+      <content>10.10.10.220,mapr-cldb,mapr-fileserver,mapr-webserver,mapr-webserver2,mapr-zookeeper,mapr-resourcemanager,mapr-nodemanager,mapr-historyserver,mapr-opentsdb,mapr-grafana,mapr-collectd
+10.10.10.220,mapr-cldb,mapr-fileserver,mapr-webserver,mapr-webserver2,mapr-zookeeper,mapr-resourcemanager,mapr-nodemanager,mapr-collect,mapr-opentsdbd
+10.10.10.220,mapr-fileserver,mapr-nodemanager,mapr-drill-1*,mapr-nfs,mapr-gateway,mapr-collectd
+10.10.10.220,mapr-fileserver,mapr-nodemanager,mapr-drill-1*,mapr-nfs,mapr-collectd
+10.10.10.220,mapr-fileserver,mapr-nodemanager,mapr-drill-1*,mapr-nfs,mapr-collectd</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>mapr-repo</id>
+      <name>mapr-repo</name>
+      <comment></comment>
+      <content>
+###################### Latest Builds ##############################################
+
+###### Performance builds ######
+
+[QA-Master-Artifactory-ProdMode]
+name=MapR Master Prod Mode Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/core-rpm/master-prodmode/
+enabled=0
+gpgcheck=0
+protect=1
+
+
+######### QA builds ##########
+
+[QA-MASTER-Artifactory]
+name=MapR Master Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/core-rpm/master/
+enabled=0
+gpgcheck=0
+protect=1
+
+###################### MEP/Opensource Builds #####################################
+
+[QA-MEP-4.0-Artifactory]
+name=MapR MEP 4.0 Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/MEP/MEP-4.0/redhat/
+enabled=1
+gpgcheck=0
+protect=1
+
+[QA-MEP-3.0-Artifactory]
+name=MapR MEP 3.0 Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/MEP/MEP-3.0/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+[QA-MEP-2.0-Artifactory]
+name=MapR MEP 2.0 Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/MEP/MEP-2.0/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+[QA-MEP-1.0-Artifactory]
+name=MapR MEP 1.0 Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/MEP/MEP-1.0/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+
+###################### ALL Patches #####################################
+
+[QA-ALL-EBF-Patches]
+name=MapR All EBF Patches Repository
+baseurl=http://artifactory.devops.lab/artifactory/list/ebf-rpm/
+enabled=0
+gpgcheck=0
+protect=1
+
+###################### 6.0.0 #####################################
+
+[QA-6.0.0-Artifactory]
+name=MapR v6.0.0 Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/v6.0.0/redhat/
+enabled=1
+gpgcheck=0
+protect=1
+
+###################### 5.2.2 #####################################
+
+[QA-5.2.2-Artifactory]
+name=MapR v5.2.2 Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/v5.2.2/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+[QA-5.2.2-Patch-Artifactory]
+name=MapR v5.2.2 Patch Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/patches/v5.2.2/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+###################### 5.2.1 #####################################
+
+[QA-5.2.1-Artifactory]
+name=MapR v5.2.1 Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/v5.2.1/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+[QA-5.2.1-Patch-Artifactory]
+name=MapR v5.2.1 Patch Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/patches/v5.2.1/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+###################### 5.2.0 #####################################
+
+[QA-5.2.0-Artifactory]
+name=MapR v5.2.0 Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/v5.2.0/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+[QA-5.2.0-Patch-Artifactory]
+name=MapR v5.2.0 Patch Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/patches/v5.2.0/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+###################### 5.1.0 #####################################
+
+[QA-5.1.0-Artifactory]
+name=MapR v5.1.0 Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/v5.1.0/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+[QA-5.1.0-Patch-Artifactory]
+name=MapR v5.1.0 Patch Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/patches/v5.1.0/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+###################### 5.0.0 #####################################
+
+[QA-5.0.0-Artifactory]
+name=MapR v5.0.0 Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/v5.0.0/redhat/
+enabled=0
+gpgcheck=0
+protect=1
+
+[QA-5.0.0-Patch-Artifactory]
+name=MapR v5.0.0 Patch Artifactory Repository
+baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/patches/v5.0.0/redhat/
+enabled=0
+gpgcheck=0
+protect=1</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig>
+      <id>settings-xml</id>
+      <name>settings-xml</name>
+      <comment>maven settings xml</comment>
+      <content>&lt;settings&gt;
+    &lt;mirrors&gt;
+        &lt;mirror&gt;
+            &lt;id&gt;internal&lt;/id&gt;
+            &lt;name&gt; MapR Interal Repository &lt;/name&gt;
+            &lt;url&gt;http://maven.corp.maprtech.com/nexus/content/groups/public/&lt;/url&gt;
+            &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+        &lt;/mirror&gt;
+    &lt;/mirrors&gt;
+    &lt;profiles&gt;
+        &lt;profile&gt;
+            &lt;id&gt;add-mapr-snapshot-repo&lt;/id&gt;
+            &lt;activation&gt;
+                &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+            &lt;/activation&gt;
+            &lt;repositories&gt;
+                &lt;repository&gt;
+                    &lt;id&gt;mapr-snapshots&lt;/id&gt;
+                    &lt;url&gt;http://maven.corp.maprtech.com/nexus/content/repositories/snapshots/&lt;/url&gt;
+                    &lt;snapshots&gt;
+                        &lt;enabled&gt;true&lt;/enabled&gt;
+                    &lt;/snapshots&gt;
+                &lt;/repository&gt;
+            &lt;/repositories&gt;
+            &lt;pluginRepositories&gt;&lt;/pluginRepositories&gt;
+        &lt;/profile&gt;
+
+        &lt;profile&gt;
+            &lt;id&gt;add-mapr-releases-repo&lt;/id&gt;
+            &lt;activation&gt;
+                &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+            &lt;/activation&gt;
+            &lt;repositories&gt;
+                &lt;repository&gt;
+                    &lt;id&gt;mapr-releases&lt;/id&gt;
+                    &lt;url&gt;http://maven.corp.maprtech.com/nexus/content/repositories/releases/&lt;/url&gt;
+                &lt;/repository&gt;
+            &lt;/repositories&gt;
+            &lt;pluginRepositories&gt;&lt;/pluginRepositories&gt;
+        &lt;/profile&gt;
+    &lt;/profiles&gt;
+&lt;/settings&gt;</content>
+      <providerId>org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig</providerId>
+      <serverCredentialMappings/>
+      <isReplaceAll>true</isReplaceAll>
+    </org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig>
+  </configs>
+</org.jenkinsci.plugins.configfiles.GlobalConfigFiles>
