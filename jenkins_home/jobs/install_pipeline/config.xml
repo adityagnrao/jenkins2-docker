@@ -11,7 +11,7 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties/>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.42">
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.41">
     <script>pipeline {
 
   // agent defines where the pipeline will run.
@@ -35,43 +35,61 @@
             git &apos;https://github.com/rohanjayaraj/mapr-cluster-scripts&apos;
             configFileProvider([configFile(fileId: &apos;cluster-1-roles&apos;, 
                     targetLocation: &apos;/var/jenkins_home/stress-pipeline/cluster-1/roles/cluster-1-roles&apos;)]) {}
+            configFileProvider([configFile(fileId: &apos;mapr-repo&apos;, 
+                    targetLocation: &apos;/var/jenkins_home/stress-pipeline/cluster-1/repo/mapr.repo&apos;)]) {}        
         }
         dir (&apos;/var/jenkins_home/stress-pipeline/cluster-2&apos;) {
             git &apos;https://github.com/rohanjayaraj/mapr-cluster-scripts&apos;
             configFileProvider([configFile(fileId: &apos;cluster-2-roles&apos;, 
                     targetLocation: &apos;/var/jenkins_home/stress-pipeline/cluster-2/roles/cluster-2-roles&apos;)]) {}
+            configFileProvider([configFile(fileId: &apos;mapr-repo&apos;, 
+                    targetLocation: &apos;/var/jenkins_home/stress-pipeline/cluster-2/repo/mapr.repo&apos;)]) {}                
         }
-        dir(&apos;config-scripts&apos;) {
-            //TODO: Devops framework    
-            git &apos;git@github.com:ssinha3/private-devops-automation-framework.git&apos;
+        dir(&apos;/var/jenkins_home/stress-pipeline/config-scripts&apos;) {
+            git branch: &apos;cross-cluster&apos;, url: &apos;git@github.com:ssinha3/private-devops-automation-framework.git&apos;
+            configFileProvider([configFile(fileId: &apos;cldb-list&apos;, 
+                    targetLocation: &apos;/var/jenkins_home/stress-pipeline/config-scripts/cldb-list&apos;)]) {}
         }
       }
     }
     
-    stage(&apos;install stage 3 - stress-pipeline un-installing src and replica&apos;) {
-      steps {
-          ws(&apos;/var/jenkins_home/stress-pipeline/cluster-1&apos;) {
-            echo &quot;un-installing cluster 1&quot;
-            sh &apos;./mapr_setup.sh -c=cluster-1-roles -u -qs -f -s -m=2 -sp=2&apos; 
-          }
-          ws(&apos;/var/jenkins_home/stress-pipeline/cluster-2&apos;) {
-            echo &quot;un-installing cluster 2&quot;
-            sh &apos;./mapr_setup.sh -c=cluster-2-roles -u -qs -f -s -m=2 -sp=2&apos; 
-          }
-      }
-    }
+    // stage(&apos;install stage 3 - stress-pipeline un-installing src and replica&apos;) {
+    //   steps {
+    //       ws(&apos;/var/jenkins_home/stress-pipeline/cluster-1&apos;) {
+    //         echo &quot;un-installing cluster 1&quot;
+    //         sh &apos;echo y | sudo ./mapr_setup.sh -c=cluster-1-roles -u -qs -f -s -m=2 -sp=2&apos; 
+    //       }
+    //       ws(&apos;/var/jenkins_home/stress-pipeline/cluster-2&apos;) {
+    //         echo &quot;un-installing cluster 2&quot;
+    //         sh &apos;echo y | sudo ./mapr_setup.sh -c=cluster-2-roles -u -qs -f -s -m=2 -sp=2&apos; 
+    //       }
+    //   }
+    // }
     
-    stage(&apos;install stage 4 - installing src and replica&apos;) {
-      steps {
-          ws(&apos;/root/stress-pipeline/cluster-scripts/cluster-1&apos;) {
-            echo &quot;installing cluster 1&quot;
-            sh &apos;./mapr_setup.sh -c=cluster-1-roles -i -qs -f -s -m=2 -sp=2&apos; 
-          }
-          ws(&apos;/root/stress-pipeline/cluster-scripts/cluster-2&apos;) {
-            echo &quot;installing cluster 2&quot;
-            sh &apos;./mapr_setup.sh -c=cluster-2-roles -i -qs -f -s -m=2 -sp=2&apos; 
-          }
-      }
+    // stage(&apos;install stage 4 - installing src and replica&apos;) {
+    //   steps {
+    //       ws(&apos;/var/jenkins_home/stress-pipeline/cluster-1&apos;) {
+    //         echo &quot;installing cluster 1&quot;
+    //         sh &apos;echo y | sudo ./mapr_setup.sh -c=cluster-1-roles -i -qs -f -s -m=2 -sp=2&apos; 
+    //       }
+    //       ws(&apos;/var/jenkins_home/stress-pipeline/cluster-2&apos;) {
+    //         echo &quot;installing cluster 2&quot;
+    //         sh &apos;echo y | sudo ./mapr_setup.sh -c=cluster-2-roles -i -qs -f -s -m=2 -sp=2&apos; 
+    //       }
+    //   }
+    // }
+    
+    stage(&apos;install stage 5 - setup cross-cluster tickets&apos;) {
+        steps {
+         ws(&apos;/var/jenkins_home/stress-pipeline/config-scripts&apos;) {
+            echo &quot;setup cross cluster tickets&quot;
+            configFileProvider([configFile(fileId: &apos;cldb-list&apos;, 
+                    variable: &apos;cldbs&apos;)]) {
+                sh &apos;cat $cldbs&apos;
+                sh &apos;./bin/cross-cluster-ticket-setup  --clustMasterCLDB $cldbs&apos;             
+            }
+          }   
+        }
     }
   }
 }</script>
