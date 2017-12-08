@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.15">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.2.5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.2.5">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>Scope:&#xd;
+Define the smoke pipeline.&#xd;
+Read Config to get the type of stress tools and number of instances of each subtype to launch.&#xd;
+Create Pipeline to launch each of the specified stress tools in smoke profile in a sequence and finally lauch the mixed one.&#xd;
+&#xd;
+Note: required Jenkins Cluster Setup &amp; Jenkins Client Setup</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.41">
+    <script>pipeline {
+
+  // agent defines where the pipeline will run.
+  agent any
+  environment {
+    SECURE = &quot;TRUE&quot;
+  }
+  stages {
+    stage(&apos;Jenkins Smoke stage 1 - DEFAULT JSON Basher&apos;) {
+        parallel {
+            stage(&apos;DEFAULT JSON Basher - Instance 1&apos;) {
+                steps {
+                    configFileProvider([configFile(fileId: &apos;basher-client-1&apos;, 
+                    targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/basher-client-1&apos;)]) {}
+                    execCmd(&quot;`cat /var/jenkins_home/stress-pipeline/clients/basher-client-1`&quot;, 
+                    &apos;&quot;cd /root/jenkins-client-setup/private-qa/new-ats/maprdb-json/core; mvn docker:start -Dats.args=\\&quot;/usr/local/maven/bin/mvn test -Dtest=JsonDBToolsTest#testJsonDBBasherBasic -Psmoke -Dclient\\&quot;&quot;&apos;)
+                }
+            }
+            stage(&apos;DEFAULT JSON Basher - Instance 2&apos;) {
+                steps {
+                    configFileProvider([configFile(fileId: &apos;basher-client-2&apos;, 
+                    targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/basher-client-2&apos;)]) {}
+                    execCmd(&quot;`cat /var/jenkins_home/stress-pipeline/clients/basher-client-2`&quot;, 
+                    &apos;&quot;cd /root/jenkins-client-setup/private-qa/new-ats/maprdb-json/core; mvn docker:start -Dats.args=\\&quot;/usr/local/maven/bin/mvn test -Dtest=JsonDBToolsTest#testJsonDBBasherBasic -Psmoke -Dclient\\&quot;&quot;&apos;)
+                }
+            }
+        }
+    }
+    // stage(&apos;Jenkins Smoke stage 2 - SI JSON Basher&apos;) {
+    //     parallel {
+    //         stage(&apos;SI JSON Basher - Instance 1&apos;) {
+    //             steps {
+    //                 configFileProvider([configFile(fileId: &apos;basher-client-1&apos;, 
+    //                 targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/basher-client-1&apos;)]) {}
+    //                 execCmd(&quot;`cat /var/jenkins_home/stress-pipeline/clients/basher-client-1`&quot;, 
+    //                 &apos;&quot;cd /root/jenkins-client-setup/private-qa/new-ats/maprdb-json/secondary-index/stress; mvn docker:start -Dats.args=\\&quot;/usr/local/maven/bin/mvn test -Dtest=SIStress#basherSITestSmoke -Psmoke -Dclient\\&quot;&quot;&apos;)
+    //             }
+    //         }
+    //         stage(&apos;SI JSON Basher - Instance 2&apos;) {
+    //             steps {
+    //                 configFileProvider([configFile(fileId: &apos;basher-client-2&apos;, 
+    //                 targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/basher-client-2&apos;)]) {}
+    //                 execCmd(&quot;`cat /var/jenkins_home/stress-pipeline/clients/basher-client-2`&quot;, 
+    //                 &apos;&quot;cd /root/jenkins-client-setup/private-qa/new-ats/maprdb-json/secondary-index/stress; mvn docker:start -Dats.args=\\&quot;/usr/local/maven/bin/mvn test -Dtest=SIStress#basherSITestSmoke -Psmoke -Dclient\\&quot;&quot;&apos;)
+    //             }
+    //         }
+    //     }
+    // }
+  }
+}
+def execCmd(ip, cmd) {
+    sh &quot;sshpass -p mapr ssh -o StrictHostKeyChecking=no root@$ip $cmd&quot;
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

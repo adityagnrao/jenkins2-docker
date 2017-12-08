@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.15">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.2.5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.2.5">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>install clusters specified in cluster-1-roles &amp; cluster-2-roles&#xd;
+&#xd;
+&#xd;
+Note: setup-install-scripts is a requirement for this job!&#xd;
+any custom pipelines should call setup-install-scripts before using this!</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.41">
+    <script>pipeline {
+
+  // agent defines where the pipeline will run.
+  agent any
+  environment {
+    SECURE = &quot;TRUE&quot;
+  }
+  stages {
+    //TODO parameterize cluster name 
+    stage(&apos;install-clusters stage 1 - installing src cluster&apos;) {
+      steps {
+          ws(&apos;/var/jenkins_home/stress-pipeline/cluster-1&apos;) {
+            echo &quot;installing cluster 1&quot;
+            sh &apos;echo y | sudo ./mapr_setup.sh -c=cluster-1-roles -i -qs -f -s -m=2 -sp=2 -n=STRESS&apos; 
+          }
+      }
+    }
+    stage(&apos;install-clusters stage 2 - installing replica cluster&apos;) {
+      steps {
+          ws(&apos;/var/jenkins_home/stress-pipeline/cluster-2&apos;) {
+            echo &quot;installing cluster 2&quot;
+            sh &apos;echo y | sudo ./mapr_setup.sh -c=cluster-2-roles -i -qs -f -s -m=2 -sp=2 -n=STRESS-REPLICA&apos; 
+          }
+      }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

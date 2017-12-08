@@ -49,47 +49,23 @@
             git branch: &apos;cross-cluster&apos;, url: &apos;git@github.com:ssinha3/private-devops-automation-framework.git&apos;
             configFileProvider([configFile(fileId: &apos;cldb-list&apos;, 
                     targetLocation: &apos;/var/jenkins_home/stress-pipeline/config-scripts/cldb-list&apos;)]) {}
+            configFileProvider([configFile(fileId: &apos;all-nodes&apos;, 
+                    targetLocation: &apos;/var/jenkins_home/stress-pipeline/config-scripts/all-nodes&apos;)]) {}
+            sh &apos;devops/pipeline prepare-development-environment devops mapr&apos;
+            sh &apos;npm i&apos;
+            sh &apos;npm run build&apos;
+        }
+        
+        dir(&apos;/var/jenkins_home/stress-pipeline/kube-scripts&apos;) {
+            git branch: &apos;kubeadm-shayan &apos;, url: &apos;git@github.com:ssinha3/private-devops-kubernetes.git&apos;
+            configFileProvider([configFile(fileId: &apos;cluster-1-clients&apos;, 
+                    targetLocation: &apos;/var/jenkins_home/stress-pipeline/kube-scripts/cluster-1-clients&apos;)]) {}
+                    configFileProvider([configFile(fileId: &apos;cluster-2-clients&apos;, 
+                    targetLocation: &apos;/var/jenkins_home/stress-pipeline/kube-scripts/cluster-2-clients&apos;)]) {}
+            sh &apos;npm i&apos;
+            sh &apos;npm run build&apos;
         }
       }
-    }
-    
-    // stage(&apos;install stage 3 - stress-pipeline un-installing src and replica&apos;) {
-    //   steps {
-    //       ws(&apos;/var/jenkins_home/stress-pipeline/cluster-1&apos;) {
-    //         echo &quot;un-installing cluster 1&quot;
-    //         sh &apos;echo y | sudo ./mapr_setup.sh -c=cluster-1-roles -u -qs -f -s -m=2 -sp=2&apos; 
-    //       }
-    //       ws(&apos;/var/jenkins_home/stress-pipeline/cluster-2&apos;) {
-    //         echo &quot;un-installing cluster 2&quot;
-    //         sh &apos;echo y | sudo ./mapr_setup.sh -c=cluster-2-roles -u -qs -f -s -m=2 -sp=2&apos; 
-    //       }
-    //   }
-    // }
-    
-    // stage(&apos;install stage 4 - installing src and replica&apos;) {
-    //   steps {
-    //       ws(&apos;/var/jenkins_home/stress-pipeline/cluster-1&apos;) {
-    //         echo &quot;installing cluster 1&quot;
-    //         sh &apos;echo y | sudo ./mapr_setup.sh -c=cluster-1-roles -i -qs -f -s -m=2 -sp=2&apos; 
-    //       }
-    //       ws(&apos;/var/jenkins_home/stress-pipeline/cluster-2&apos;) {
-    //         echo &quot;installing cluster 2&quot;
-    //         sh &apos;echo y | sudo ./mapr_setup.sh -c=cluster-2-roles -i -qs -f -s -m=2 -sp=2&apos; 
-    //       }
-    //   }
-    // }
-    
-    stage(&apos;install stage 5 - setup cross-cluster tickets&apos;) {
-        steps {
-         ws(&apos;/var/jenkins_home/stress-pipeline/config-scripts&apos;) {
-            echo &quot;setup cross cluster tickets&quot;
-            configFileProvider([configFile(fileId: &apos;cldb-list&apos;, 
-                    variable: &apos;cldbs&apos;)]) {
-                sh &apos;cat $cldbs&apos;
-                sh &apos;./bin/cross-cluster-ticket-setup  --clustMasterCLDB $cldbs&apos;             
-            }
-          }   
-        }
     }
   }
 }</script>

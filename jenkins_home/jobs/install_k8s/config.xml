@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.15">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.2.5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.2.5">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>Install Kubernetes given set of nodes on list defined in managed scripts cluster-1-clients. </description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers/>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.41">
+    <script>pipeline {
+
+  // agent defines where the pipeline will run.
+  agent any
+  environment {
+    SECURE = &quot;TRUE&quot;
+  }
+  stages {
+    stage(&apos;install-k8s stage 1 - installing src k8s&apos;) {
+      steps {
+          ws(&apos;/var/jenkins_home/stress-pipeline/kube-scripts&apos;) {
+              script {
+                  try {
+                        sh &apos;./bin/install-kube preCheck `cat cluster-1-clients`&apos;
+                        sh &apos;./bin/install-kube setup `cat cluster-1-clients`&apos;
+                  } catch (err) {
+                      
+                  }
+              }
+          }   
+      }
+    }
+    stage(&apos;install-k8s stage 2 - installing replica k8s&apos;) {
+      steps {
+        ws(&apos;/var/jenkins_home/stress-pipeline/kube-scripts&apos;) {
+            script {
+                  try {
+                        sh &apos;./bin/install-kube preCheck `cat cluster-2-clients`&apos;
+                        sh &apos;./bin/install-kube setup `cat cluster-2-clients`&apos;
+                  } catch (err) {
+                      
+                  }
+              }
+          } 
+      }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

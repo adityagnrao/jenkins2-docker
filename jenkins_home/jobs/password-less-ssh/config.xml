@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.15">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.2.5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.2.5">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>setup password-less ssh between the nodes specified in all-nodes&#xd;
+&#xd;
+&#xd;
+Note: setup-install-scripts is a requirement for this job!&#xd;
+any custom pipelines should call setup-install-scripts before using this!</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.41">
+    <script>pipeline {
+
+  // agent defines where the pipeline will run.
+  agent any
+  environment {
+    SECURE = &quot;TRUE&quot;
+  }
+  stages{
+    stage(&apos;install stage 6 - setup passwordless ssh&apos;) {
+             steps {
+                 ws(&apos;/var/jenkins_home/stress-pipeline/config-scripts&apos;) {
+                    sh &apos;cat all-nodes&apos;
+                    sh &apos;./bin/password-less-ssh --ips `cat all-nodes`&apos;             
+                 }
+             }
+        }
+  }
+}
+</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

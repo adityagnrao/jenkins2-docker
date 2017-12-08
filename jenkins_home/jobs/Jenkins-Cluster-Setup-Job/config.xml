@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.15">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.2.5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.2.5">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>Pipe : Setup Install Scripts =&gt; Uninstall Clusters =&gt; Install Clusters =&gt; Setup Cross Cluster Tickets =&gt; Password-less Ssh&#xd;
+https://dzone.com/refcardz/continuous-delivery-with-jenkins-workflow&#xd;
+-----------------&#xd;
+Create a cluster install jenkins job if not already present&#xd;
+Edit Roles file for install - so install scripts roles file can be confgured via Jenkins.&#xd;
+Start install for both clusters.&#xd;
+Set up crosscluster replication.&#xd;
+Set up passwordless ssh between stress driver nodes and all the other cluster nodes, due to mapr cluster check.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers/>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.41">
+    <script>pipeline {
+
+  // agent defines where the pipeline will run.
+  agent any
+  environment {
+    SECURE = &quot;TRUE&quot;
+  }
+  stages {
+      
+    stage(&apos;install stage 1 - pull &amp; configure install scripts&apos;) {
+      steps {
+          build &apos;setup-install-scripts&apos;
+      }
+    }
+    
+    stage(&apos;install stage 2 - clusters un-install&apos;) {
+      steps {
+          build &apos;uninstall-clusters&apos;
+      }
+    }
+    
+    stage(&apos;install stage 3 - clusters install&apos;) {
+      steps {
+          build &apos;install-clusters&apos;
+      }
+    }
+    
+    stage(&apos;install stage 4 - cross-cluster tickets&apos;) {
+      steps {
+          build &apos;setup-cross-cluster-tickets&apos;
+      }
+    }
+    
+    stage(&apos;install stage 5 - password-less ssh&apos;) {
+      steps {
+          build &apos;password-less-ssh&apos;
+      }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

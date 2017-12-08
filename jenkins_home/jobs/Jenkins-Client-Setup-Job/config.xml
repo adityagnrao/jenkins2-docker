@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.15">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.2.5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.2.5">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>Scope : &#xd;
+Create Job for Client setup if not already present &#xd;
+Edit config for client nodes &#xd;
+Prepare nodes with docker and dependencies using devops-framework.&#xd;
+Pull/Build MapR Base docker image on client nodes&#xd;
+ -&gt; MapR Client&#xd;
+ -&gt; Java&#xd;
+ -&gt; Maven&#xd;
+&#xd;
+Build ATS docker Image from MapR Base&#xd;
+ -&gt; Configure to cluster specified in Jenkins Client Config&#xd;
+ -&gt; Pull/Configure/Build ATS based on Jenkins Client Config&#xd;
+ -&gt; Password less ssh from docker client node to all cluster nodes.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.41">
+    <script>pipeline {
+
+  // agent defines where the pipeline will run.
+  agent any
+  environment {
+    SECURE = &quot;TRUE&quot;
+  }
+  stages {
+      
+    stage(&apos;install stage 1 - pull &amp; configure install scripts&apos;) {
+      steps {
+          build &apos;setup-install-scripts&apos;
+      }
+    }
+    
+    // TODO
+    // stage(&apos;install stage 2 - clients un-install&apos;) {
+    //   steps {
+    //       build &apos;uninstall-clients&apos;
+    //   }
+    // }
+    
+    stage(&apos;install stage 3 - docker install&apos;) {
+      steps {
+          build &apos;install-docker&apos;
+      }
+    }
+
+    //TODO verify if we need this from ATS dockers to cluster nodes
+    // stage(&apos;install stage 5 - password-less ssh&apos;) {
+    //   steps {
+    //       build &apos;password-less-ssh&apos;
+    //   }
+    // }
+    
+    stage(&apos;install stage 4 - configure client scripts&apos;) {
+        steps {
+            configFileProvider([configFile(fileId: &apos;cluster-1-clients&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/cluster-1-clients&apos;, 
+            variable: &apos;CLUSTER_1_CLIENTS&apos;)]) {}
+            
+            configFileProvider([configFile(fileId: &apos;cluster-2-clients&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/cluster-2-clients&apos;, 
+            variable: &apos;CLUSTER_2_CLIENTS&apos;)]) {}
+            
+            configFileProvider([configFile(fileId: &apos;jenkins-client-setup-ssh-config&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/config&apos;)]) {}
+            
+            //
+            configFileProvider([configFile(fileId: &apos;cluster-1-ats-config&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/cluster-1-ats-config&apos;)]) {}
+
+            configFileProvider([configFile(fileId: &apos;cluster-2-ats-config&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/cluster-2-ats-config&apos;)]) {}
+            
+            // save cldb list zk list and cluster name
+            configFileProvider([configFile(fileId: &apos;cluster-1-cldb-list&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/cluster-1-cldb-list&apos;)]) {}
+            
+            configFileProvider([configFile(fileId: &apos;cluster-2-cldb-list&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/cluster-2-cldb-list&apos;)]) {}
+            
+            configFileProvider([configFile(fileId: &apos;cluster-1-zk-list&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/cluster-1-zk-list&apos;)]) {}
+            
+            configFileProvider([configFile(fileId: &apos;cluster-2-zk-list&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/cluster-2-zk-list&apos;)]) {}
+            
+            configFileProvider([configFile(fileId: &apos;cluster-1-name&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/cluster-1-name&apos;)]) {}
+            
+            configFileProvider([configFile(fileId: &apos;cluster-2-name&apos;, 
+            targetLocation: &apos;/var/jenkins_home/stress-pipeline/clients/cluster-2-name&apos;)]) {}
+            
+        }
+    }
+    
+    // stage(&apos;install stage 5 - git clone ats&apos;) {
+    //   steps {
+    //         // pull ats
+    //         // save ats config on client nodes
+    //         // add feature in dev-ops framework for executing given cmd on an ip range.
+    //         ws (&apos;/var/jenkins_home/stress-pipeline/clients/&apos;) {
+    //             sh &apos;cat cluster-1-clients &amp;&amp; printf &quot;,&quot; &amp;&amp; cat cluster-2-clients&apos;
+    //             script {
+    //                 def clientNodes = sh(returnStdout: true, script: &apos;cat cluster-1-clients &amp;&amp; printf &quot;,&quot; &amp;&amp; cat cluster-2-clients&apos;).trim().split(&apos;,&apos;)
+                    
+    //                 for (client in clientNodes) {
+    //                     echo client
+    //                     execCmd(client, &apos;rm -rf /root/jenkins-client-setup&apos;)
+    //                     execCmd(client, &apos;mkdir /root/jenkins-client-setup&apos;)
+                        
+    //                     execScp(client, &apos;/usr/share/jenkins/ref/.ssh/id_rsa&apos;, &apos;/root/jenkins-client-setup/id_rsa&apos;)
+    //                     execScp(client, &apos;config&apos;, &apos;/root/.ssh/config&apos;)
+                        
+    //                     execCmd(client, &apos;chmod 600 /root/jenkins-client-setup/id_rsa&apos;)
+    //                     execCmd(client, &apos;chmod 400 /root/.ssh/config&apos;)
+    //                     execCmd(client, &apos;&quot;cd /root/jenkins-client-setup/;git clone git@github.com:ssinha3/private-qa.git&quot;&apos;)
+    //                 }
+    //             }
+    //         }
+    //       }
+    //     }
+    
+    stage(&apos;install stage 6 - build ats client&apos;) {
+        parallel {
+            stage(&apos;install stage 6 - build ats client 1&apos;) {
+                steps {
+                    // add feature in dev-ops framework for executing given cmd on an ip range.
+                        ws (&apos;/var/jenkins_home/stress-pipeline/clients/&apos;) {
+                        script {    
+                            def client1Nodes = sh(returnStdout: true, script: &apos;cat /var/jenkins_home/stress-pipeline/clients/cluster-1-clients&apos;).trim().split(&apos;,&apos;)
+                                echo &quot;$client1Nodes&quot;
+                                for (client in client1Nodes) {
+                                    echo client
+                                    execScp(client, &apos;/var/jenkins_home/stress-pipeline/clients/cluster-1-ats-config&apos;, &apos;/root/jenkins-client-setup/private-qa/new-ats/common/src/main/resources/ATSConfig.properties&apos;);
+                                    execCmd(client, &apos;&quot;cd /root/jenkins-client-setup/private-qa/new-ats;mvn clean install -U -T 10&quot;&apos;)
+                                    execCmd(client, &apos;&quot;cd /root/jenkins-client-setup/private-qa/new-ats; mvn package docker:build -Dmapr.cldbs=`cat cluster-1-cldb-list` -Dmapr.zks=`cat cluster-1-zk-list` -Dmapr.cluster.name=`cat cluster-1-name`&quot;&apos;)
+                                }
+                            }
+                        }
+                    }
+                }
+            stage(&apos;install stage 6 - build ats client 2&apos;) {
+                steps {
+                    // add feature in dev-ops framework for executing given cmd on an ip range.
+                        ws (&apos;/var/jenkins_home/stress-pipeline/clients/&apos;) {
+                        script { 
+                            def client2Nodes = sh(returnStdout: true, script: &apos;cat /var/jenkins_home/stress-pipeline/clients/cluster-2-clients&apos;).trim().split(&apos;,&apos;)
+                                echo &quot;$client2Nodes&quot;
+                                for (client in client2Nodes) {
+                                    echo client
+                                    execScp(client, &apos;/var/jenkins_home/stress-pipeline/clients/cluster-2-ats-config&apos;, &apos;/root/jenkins-client-setup/private-qa/new-ats/common/src/main/resources/ATSConfig.properties&apos;);
+                                    execCmd(client, &apos;&quot;cd /root/jenkins-client-setup/private-qa/new-ats;mvn clean install -U -T 10&quot;&apos;)
+                                    execCmd(client, &apos;&quot;cd /root/jenkins-client-setup/private-qa/new-ats; mvn package docker:build -Dmapr.cldbs=`cat cluster-2-cldb-list` -Dmapr.zks=`cat cluster-2-zk-list` -Dmapr.cluster.name=`cat cluster-2-name`&quot;&apos;)
+                                }
+                            }
+                        }
+                    }
+            }
+        }
+    }
+    }
+}
+def execCmd(ip, cmd) {
+    sh &quot;sshpass -p mapr ssh -o StrictHostKeyChecking=no root@$ip $cmd&quot;
+}
+
+def execScp(ip, srcFile, dstFile) {
+    sh &quot;sshpass -p mapr scp -o StrictHostKeyChecking=no $srcFile root@$ip:$dstFile&quot;
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

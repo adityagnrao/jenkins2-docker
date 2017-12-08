@@ -3,10 +3,479 @@
   <configs class="sorted-set">
     <comparator class="org.jenkinsci.plugins.configfiles.GlobalConfigFiles$1"/>
     <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>all-nodes</id>
+      <name>all-nodes</name>
+      <comment></comment>
+      <content>10.10.10.220,10.10.108.107,10.10.88.[154-157]</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>basher-client-1</id>
+      <name>basher-client-1</name>
+      <comment></comment>
+      <content>10.10.10.220</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>basher-client-2</id>
+      <name>basher-client-2</name>
+      <comment></comment>
+      <content>10.10.108.107</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
       <id>cldb-list</id>
       <name>cldb-list</name>
       <comment></comment>
-      <content>10.10.88.154,10.10.88.157</content>
+      <content>10.10.88.154,10.10.88.156</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-1-ats-config</id>
+      <name>cluster-1-ats-config</name>
+      <comment></comment>
+      <content>########################################
+# ATS external properties config file
+# Properties in this file will be loaded
+# to ATSBase&apos;s custom config map
+########################################
+########################################
+# MAPR_USER info. The user that
+# runs the cluster and submitt jobs
+# for most of the test cases
+########################################
+MAPR_USER_NAME=mapr
+MAPR_USER_GROUP=mapr
+MAPR_USER_PASS=mapr
+
+########################################
+# Zookeeper nodes and port, separated by comma
+########################################
+ZOOKEEPER_NODES=127.0.0.1
+ZOOKEEPER_PORT=5181
+
+########################################
+# webserver hostname, port, username, password
+# Note: Hostname should be hostname, not IP.
+########################################
+WEBSERVER_HOSTNAME=arao1.qa.lab
+WEBSERVER_PORT=8443
+WEBSERVER_USER=mapr
+WEBSERVER_PASSWORD=mapr
+
+########################################
+# This property defines maximum number of parallel hadoop jobs
+# to be run. The common way is to set (NUMBER OF CORES - 1)
+########################################
+PARALLELISM=2
+
+########################################
+# hbase site xml
+########################################
+HBASE_RESOURCE_NAME=/opt/mapr/hbase/hbase-1.1.8/conf/hbase-site.xml
+HBASE_HOME=/opt/mapr/hbase/hbase-1.1.8
+HBASE_JAR=hbase-1.1.8-mapr-1703-SNAPSHOT.jar
+
+########################################
+# hbase rest server address and port
+#rest server address is any hbase regionserver address
+########################################
+HBASE_REST_SERVER_ADDRESS=x.x.x.x
+HBASE_REST_SERVER_PORT=xxxx
+
+##################################################################################
+# File client impersonation test users -&gt; users that used by file client
+# impersonation tests. Three regular users are needed.
+# NOTE: The third user IMPERSONATION_USER3 is used for secure cluster
+# testing of non ticketed user. This user should not have a
+# ticket to the maprcluster.
+##################################################################################
+IMPERSONATION_USER1=mapruser1
+IMPERSONATION_USER1_PASS=mapruser1
+IMPERSONATION_USER1_GROUP=mapruser1
+IMPERSONATION_USER2=mapruser2
+IMPERSONATION_USER2_PASS=mapruser2
+IMPERSONATION_USER2_GROUP=mapruser2
+IMPERSONATION_USER3=mapruser3_no_ticket
+IMPERSONATION_USER3_PASS=mapruser3_no_ticket
+IMPERSONATION_USER3_GROUP=mapruser3_no_ticket
+##################################################################################
+# User which has ONLY impersonation ticket
+##################################################################################
+IMPERSONATION_USER_NOTICKET=
+IMPERSONATION_USER_TICKET_PATH=
+##################################################################################
+# Test users used by M7 security tests. Four regular users are needed
+# For group configuration, please look at Smoke Test Setup Guide
+##################################################################################
+M7SECURITY_USER1=m7user1
+M7SECURITY_USER1_PASS=m7user1
+M7SECURITY_USER1_GROUP=m7group1
+M7SECURITY_USER2=m7user2
+M7SECURITY_USER2_PASS=m7user2
+M7SECURITY_USER2_GROUP=m7group1
+M7SECURITY_USER3=m7user3
+M7SECURITY_USER3_PASS=m7user3
+M7SECURITY_USER3_GROUP=m7group2
+M7SECURITY_USER4=m7user4
+M7SECURITY_USER4_PASS=m7user4
+M7SECURITY_USER4_GROUP=m7group1,m7group2
+
+##################################################################################
+# Test users used by File ACE security tests. Ten regular users are needed
+# For group configuration, please look at Smoke Test Setup Guide
+##################################################################################
+FACE_USER1=fuser1
+FACE_USER1_PASS=fuser1
+FACE_USER1_GROUP=fgroup1
+FACE_USER2=fuser2
+FACE_USER2_PASS=fuser2
+FACE_USER2_GROUP=fgroup1
+FACE_USER3=fuser3
+FACE_USER3_PASS=fuser3
+FACE_USER3_GROUP=fgroup2
+FACE_USER4=fuser4
+FACE_USER4_PASS=fuser4
+FACE_USER4_GROUP=fgroup2
+FACE_USER5=fuser5
+FACE_USER5_PASS=fuser5
+FACE_USER5_GROUP=fgroup3
+FACE_USER6=fuser6
+FACE_USER6_PASS=fuser6
+FACE_USER6_GROUP=fgroup3
+FACE_USER7=fuser7
+FACE_USER7_PASS=fuser7
+FACE_USER7_GROUP=fgroup1,fgroup2
+FACE_USER8=fuser8
+FACE_USER8_PASS=fuser8
+FACE_USER8_GROUP=fgroup2,fgroup3
+FACE_USER9=fuser9
+FACE_USER9_PASS=fuser9
+FACE_USER9_GROUP=fgroup3,fgroup1
+FACE_USER10=fuser10
+FACE_USER10_PASS=fuser10
+FACE_USER10_GROUP=fgroup1,fgroup2,fgroup3
+
+# MapR installation dir
+########################################
+MAPR_HOME=/opt/mapr
+########################################
+
+########################################
+# SelfHost MountPath
+########################################
+SELFHOST_MOUNTPATH=/home/MAPRTECH/qa
+
+########################################
+# hive server node
+########################################
+HIVE_SERVER=127.0.0.1:10000
+HIVE_USER=mapr
+HIVE_PASSW=mapr
+# comma separated list of nodes where hiveserver2 is configured
+HIVESERVER2_NODES=localhost
+HIVESERVER2_DEFAULT_PORT=10000
+# comma separated list of nodes where hivemetastore is configured
+HIVEMETASTORE_NODES=localhost
+HIVEMETASTORE_DEFAULT_PORT=9083
+# comma separated list of nodes where hivewebhcat is configured
+WEBHCAT_NODES=localhost
+WEBHCAT_DEFAULT_PORT=50111
+########################################
+# path to kerberos keytab used by hive
+HIVE_KERBEROS_KEYTAB=/opt/mapr/conf/mapr.keytab
+########################################
+# mysql server node
+########################################
+MYSQL_SERVER=127.0.0.1:3306
+MYSQL_DB_NAME=metastore
+MYSQL_USER=root
+MYSQL_PASS=123456
+
+########################################
+# sqoop home
+########################################
+SQOOP_HOME=/opt/mapr/sqoop/sqoop-1.4.6/
+
+########################################
+# hive home
+########################################
+HIVE_HOME=/opt/mapr/hive/hive-2.1/
+########################################
+# pig home
+########################################
+PIG_HOME=/opt/mapr/pig/pig-0.16/
+########################################
+# oozie
+########################################
+OOZIE_HOME=/opt/mapr/oozie/oozie-
+OOZIE_URL=http://perfnode166.perf.lab:11000/oozie
+SPARK_PRODUCER_URL=http://repository.mapr.com/nexus/content/groups/mapr-public/org/apache/spark/spark-streaming-kafka-producer_2.11/2.1.0-mapr-1710/spark-streaming-kafka-producer_2.11-2.1.0-mapr-1710.jar
+########################################
+# OOZIE KERBEROS PROPERTIES
+########################################
+OOZIE_AUTHENTICATION_PRINCIPAL=oozie.authentication.kerberos.principal
+OOZIE_SERVICE_HADOOP_PRINCIPAL=oozie.service.HadoopAccessorService.kerberos.principal
+LOCAL_REALM=local.realm
+#############################################
+# Secure and Unsecure cluster names and Ips
+#############################################
+UNSECURE_CLUSTER_NAME=ATSnonsecure
+UNSECURE_CLUSTER_IP=x.x.x.x
+SECURE_CLUSTER_NAME=secureATS
+SECURE_CLUSTER_IP=x.x.x.x
+########################################
+# MapR Client
+########################################
+MAPR_CLIENT=x.x.x.x
+########################################
+# Sasl users
+########################################
+SASL_USER1=userA
+SASL_USER1_PASS=mapr
+SASL_USER2=mapruser1
+SASL_USER2_PASS=mapr
+########################################
+# Kerberos user
+########################################
+KERBEROS_USER=kuser1
+
+#######################################
+#  VIP &amp; NFS Tests IPs
+#######################################
+VIP_START_IP=
+VIP_END_IP=
+VIP_NETMASK=
+VIP_PREF_MAC=x:x:x:x:x:x
+VIP_PREF_MAC_IP=x.x.x.x
+#VIP_PREF_MAC_IP should not be from VIP range but an IP bound to the interface with
+# mac VIP_PREF_MAC on one of the nodes in the cluster.
+NFS_SPECIFIC_CLIENT=x.x.x.x
+NFS_REMOTE_CLIENT=x.x.x.x
+CIDR_NOTATION=x.x.x.x/x
+CIDR_VALID_IP= x.x.x.x
+REMOTE_CLUSTER_NAME=X
+REMOTE_CLUSTER_CLDB_IP=x.x.x.x
+REMOTE_CLUSTER_CLDB_IP_LIST=x.x.x.x,x.x.x.x
+NFS_EDGE_SERVER=x.x.x.x
+
+############################################
+# POSIX Client Tests
+############################################
+POSIX_CLIENT_NODE=x.x.x.x
+POSIX_CLIENT_SUSE_NODE=x.x.x.x
+POSIX_CLIENT_NODES_LIST=x.x.x.x,x.x.x.x
+POSIX_CLIENT_LICENSETEST_IPs=x.x.x.x,x.x.x.x,x.x.x.x,x.x.x.x,x.x.x.x,x.x.x.x,x.x.x.x
+POSIX_CLIENT_LICENSETEST_EXTRA_IP=x.x.x.x
+FUSE_SERVICE_TYPE=platinum
+
+#########################################
+# M7 REPLICATION CLUSTER
+#########################################
+REPLICATION_CLUSTER1_NAME=xxxx
+REPLICATION_CLUSTER1_CLDB_IP_LIST=x.x.x.x
+REPLICATION_CLUSTER1_NEW_GATEWAY_CLDB_IP=x.x.x.x
+REPLICATION_CLUSTER1_INVALID_GATEWAY_IP=x.x.x.x
+REPLICATION_CLUSTER2_NAME=xxxx
+REPLICATION_CLUSTER2_CLDB_IP_LIST=x.x.x.x
+REPLICATION_CLUSTER3_NAME=xxxx
+REPLICATION_CLUSTER3_CLDB_IP_LIST=x.x.x.x
+
+CUSTOM_REPLICATION_CLUSTER1_NAME=x.x.x.x
+CUSTOM_REPLICATION_CLUSTER1_CLDB_IP_LIST=x.x.x.x
+CUSTOM_REPLICATION_CLUSTER2_NAME=x.x.x.x
+CUSTOM_REPLICATION_CLUSTER2_CLDB_IP_LIST=x.x.x.x
+
+SLAVE_CLUSTER_GATEWAY_IPS=x.x.x.x
+MASTER_CLUSTER_GATEWAY_IPS=x.x.x.x
+REPLICATION_DNS_SERVER_IP=x.x.x.x
+REPLICATION_DNS_ZONE_FILE=xxxx
+
+#########################################
+# REST IMPERSONATION TYPE
+#########################################
+REST_IMPERSONATION_TYPE=SIMPLE
+REST_IMPERSONATION_ENABLED=FALSE
+
+#########################################
+# ES SETUP
+#########################################
+ES_VERSION=2.2.0
+ES_ZIP_INSTALL_DIR=/root/elasticsearch/elasticsearch-2.2.0/
+ES_NODES=x.x.x.x
+ES_REST_PORT=9200
+ES_INSTALLED=false
+ES_UNICAST_DISCOVERY=false
+ES_UNICAST_HOSTS=x.x.x.x
+ES_CLUSTER_NAME=yyyy
+GATEWAY_NODES=x.x.x.x
+GATEWAY_INSTALLED=false
+MAPR_CLUSTER_NAME=xxxx
+#for Zip install
+ES_INSTALL_SOURCE_ZIP=https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/2.2.0/elasticsearch-2.2.0.zip
+KIBANA_INSTALL_SOURCE_ZIP=https://download.elastic.co/kibana/kibana/kibana-4.4.1-linux-x64.tar.gz
+#for rpm install
+ES_INSTALL_SOURCE_RPM=https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/2.2.0/elasticsearch-2.2.0.rpm
+KIBANA_INSTALL_SOURCE_RPM=http://packages.elastic.co/kibana/4.4/centos/kibana-4.4.1-1.x86_64.rpm
+KIBANA_INSTALL_KEY=http://packages.elastic.co/GPG-KEY-elasticsearch
+CLDB_NODES=x.x.x.x
+CONFIGURE_DNS=false
+DNS_NAMESERVER_NODE=x.x.x.x
+DNS_DOMAIN=atsdomain.com
+LOG_MODE=none
+ATS_ROOT=PATH_TO_OLD_ATS_DIR
+ES_CONVERSION_CLASS=M7ESConverter
+ES_CONVERSION_JAR=/ESTest.jar
+# Run All Tests with Large rows/cf&apos;s/cols,
+# values can be small medium and large
+DATA_LOAD=small
+
+##########################################
+# ES LONGEVITY
+##########################################
+MAX_NUM_ROWS=500
+MAX_NUM_THREADS=50
+MAX_NUM_CF=5
+MAX_NUM_QAL=10
+MAX_VALUE_SIZE=100
+MAX_BATCH_SIZE=20
+AUTO_FLUSH=true
+MAX_KEY_SIZE=32
+MAX_NUM_TABLES=1
+
+#########################################
+# ES DEV SETUP
+#########################################
+DEV_ES_NODES=10.10.10.87
+DEV_ES_REST_PORT=9200
+DEV_ES_HOME=/opt/elasticsearch-1.4.4
+DEV_ES_LOCAL_NAME=xxx
+
+###########################################
+# SPARK SETUP
+###########################################
+SPARK_VERSION=2.1.0
+SPARK_STANDALONE_MASTER=yarn
+DEPLOY_MODE=client
+SPARK_HOME=/opt/mapr/spark/spark-2.1.0/
+
+# Timeout for Spark tests in seconds.
+# If spark job runs longer than timeout then test will be marked as failed.
+SPARK_TESTS_TIMEOUT=1200
+
+#########################################
+# Control failure parameter
+#########################################
+TCP_SYN_RETRIES=4
+MAX_THREADS=1
+NUM_CONTAINERS=50
+CHUNK_SIZE=268435456
+MNT_PNT=/tmp/mapr
+NFS_RMT_CLNT=x.x.x.x
+NFS_RMT_MNT_PATH=/tmp/mapr
+CTRL_SETUP_REQUIRED=true
+
+###########################################
+# Myriad specific parameters
+###########################################
+MYRIAD_HOME=/opt/mapr/myriad/myriad-0.1
+MESOS_LIB_PATH=/usr/local/lib/libmesos.so
+MARATHON_HOST=x.x.x.x:8080
+MESOS_HOST=x.x.x.x:5050
+MYRIAD_PORT=8192
+MYRIAD_DNS_HOST=x.x.x.x
+
+###########################################
+# Kafka specific parameters
+###########################################
+KAFKA_HOME=/opt/mapr/kafka/kafka-0.9.0
+KAFKA_BROKERS=broker1:7645,broker2:7645,..&lt;broker:port&gt;
+KAFKA_ZOOKEEPERS=&lt;zookeeper1:port,zookeeper2:port..&gt;
+REMOTE_KAFKA_HOME=/root/kafka_2.11-0.9.0.0
+
+###########################################
+# Kafka REST specific parameters
+###########################################
+KAFKA_REST_URLS=&lt;host1:port1,host2:port2..&gt;
+# HTTPS parameters
+SSL_CLIENT_KEYSTORE_LOCATION=&quot;???&quot;
+SSL_CLIENT_KEYSTORE_PASSWORD=&quot;???&quot;
+SSL_CLIENT_KEY_PASSWORD=&quot;???&quot;
+
+###########################################
+# Kafka Connect specific parameters
+###########################################
+KAFKA_CONNECT_URLS=localhost:8083
+KAFKA_CONNECT_TEST_STREAM=/kafka_connect_test_stream
+MYSQL_KAFKA_CONNECT_DB=kafka_connect_db
+
+############################################
+#Mirror specific parameters
+############################################
+RWMIRROR_USE_OLDER_VOLUMES=false
+RWMIRROR_OLDER_VOLUME_PREFIX=x
+RWMIRROR_NUMBER_OF_OLDER_VOLS=0
+NUMBER_OF_MIRROR_VOLS=1
+RWMIRROR_CONVERT_FLAG=true
+SRC_CLUSTER_NAME=x
+SRC_CLDB_IPS_LIST=x.x.x.x,x.x.x.x
+SRC_MFS_IP_LIST=x.x.x.x,x.x.x.x
+
+############################################
+#Multicluster configuration
+############################################
+CLUSTER1_NAME=xxx
+CLUSTER1_CLDB_IP_LIST=x.x.x.x
+CLUSTER2_NAME=xxx
+CLUSTER2_CLDB_IP_LIST=x.x.x.x
+
+########################################
+# Object pools configs
+########################################
+OBJECTPOOLS_CLOUD_URL=http://10.10.101.122:9000
+OBJECTPOOLS_CLOUD_CREDENTIALS=28FBLWB8KPgYj83kyRVIWlvFGptUzuWUDVab/sJe
+###########################################
+#### FileMigrate configuration
+# Default: the-team
+# Access key: AKIAJPYA27PSBE66RUVA
+# Secret key: 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
+# Note: For internal use only
+###########################################
+AWS_ACCESS_KEY=AKIAJPYA27PSBE66RUVA
+AWS_SECRET_KEY=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
+FILEMIGRATE_HOME=/opt/mapr/filemigrate/filemigrate-1.0.0
+FILEMIGRATE_PROPS_FILE=/var/mapr/filemigrate/FileMigrate.properties
+FILEMIGRATE_AWS_REGION=xxx
+PROXY_HOST=xxx
+PROXY_PORT=xxx
+PROXY_USERNAME=xxx
+PROXY_PASSWORD=xxx
+########################################
+# Impala main configuration
+########################################
+IMPALA_SERVER_HOST=x.x.x.x
+IMPALA_SERVER_PORT=21050</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-1-cldb-list</id>
+      <name>cluster-1-cldb-list</name>
+      <comment></comment>
+      <content>10.10.88.154,10.10.88.155</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-1-clients</id>
+      <name>cluster-1-clients</name>
+      <comment></comment>
+      <content>10.10.10.220</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-1-name</id>
+      <name>cluster-1-name</name>
+      <comment></comment>
+      <content>STRESS</content>
       <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
     </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
     <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
@@ -14,8 +483,464 @@
       <name>cluster-1-roles</name>
       <comment></comment>
       <content>10.10.88.154,mapr-cldb,mapr-fileserver,mapr-webserver,mapr-webserver2,mapr-zookeeper,mapr-resourcemanager,mapr-nodemanager,mapr-historyserver,mapr-opentsdb,mapr-grafana,mapr-collectd
-10.10.88.156,mapr-cldb,mapr-fileserver,mapr-webserver,mapr-webserver2,mapr-zookeeper,mapr-resourcemanager,mapr-nodemanager,mapr-collectd,mapr-opentsdbd,mapr-drill-1*,mapr-gateway
+10.10.88.155,mapr-cldb,mapr-fileserver,mapr-webserver,mapr-webserver2,mapr-zookeeper,mapr-resourcemanager,mapr-nodemanager,mapr-collectd,mapr-opentsdbd,mapr-drill-1*,mapr-gateway
+10.10.10.220,mapr-client
 </content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-1-zk-list</id>
+      <name>cluster-1-zk-list</name>
+      <comment></comment>
+      <content>10.10.88.154,10.10.88.155</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-2-ats-config</id>
+      <name>cluster-2-ats-config</name>
+      <comment></comment>
+      <content>########################################
+# ATS external properties config file
+# Properties in this file will be loaded
+# to ATSBase&apos;s custom config map
+########################################
+########################################
+# MAPR_USER info. The user that
+# runs the cluster and submitt jobs
+# for most of the test cases
+########################################
+MAPR_USER_NAME=mapr
+MAPR_USER_GROUP=mapr
+MAPR_USER_PASS=mapr
+
+########################################
+# Zookeeper nodes and port, separated by comma
+########################################
+ZOOKEEPER_NODES=127.0.0.1
+ZOOKEEPER_PORT=5181
+
+########################################
+# webserver hostname, port, username, password
+# Note: Hostname should be hostname, not IP.
+########################################
+WEBSERVER_HOSTNAME=arao3.qa.lab
+WEBSERVER_PORT=8443
+WEBSERVER_USER=mapr
+WEBSERVER_PASSWORD=mapr
+
+########################################
+# This property defines maximum number of parallel hadoop jobs
+# to be run. The common way is to set (NUMBER OF CORES - 1)
+########################################
+PARALLELISM=2
+
+########################################
+# hbase site xml
+########################################
+HBASE_RESOURCE_NAME=/opt/mapr/hbase/hbase-1.1.8/conf/hbase-site.xml
+HBASE_HOME=/opt/mapr/hbase/hbase-1.1.8
+HBASE_JAR=hbase-1.1.8-mapr-1703-SNAPSHOT.jar
+
+########################################
+# hbase rest server address and port
+#rest server address is any hbase regionserver address
+########################################
+HBASE_REST_SERVER_ADDRESS=x.x.x.x
+HBASE_REST_SERVER_PORT=xxxx
+
+##################################################################################
+# File client impersonation test users -&gt; users that used by file client
+# impersonation tests. Three regular users are needed.
+# NOTE: The third user IMPERSONATION_USER3 is used for secure cluster
+# testing of non ticketed user. This user should not have a
+# ticket to the maprcluster.
+##################################################################################
+IMPERSONATION_USER1=mapruser1
+IMPERSONATION_USER1_PASS=mapruser1
+IMPERSONATION_USER1_GROUP=mapruser1
+IMPERSONATION_USER2=mapruser2
+IMPERSONATION_USER2_PASS=mapruser2
+IMPERSONATION_USER2_GROUP=mapruser2
+IMPERSONATION_USER3=mapruser3_no_ticket
+IMPERSONATION_USER3_PASS=mapruser3_no_ticket
+IMPERSONATION_USER3_GROUP=mapruser3_no_ticket
+##################################################################################
+# User which has ONLY impersonation ticket
+##################################################################################
+IMPERSONATION_USER_NOTICKET=
+IMPERSONATION_USER_TICKET_PATH=
+##################################################################################
+# Test users used by M7 security tests. Four regular users are needed
+# For group configuration, please look at Smoke Test Setup Guide
+##################################################################################
+M7SECURITY_USER1=m7user1
+M7SECURITY_USER1_PASS=m7user1
+M7SECURITY_USER1_GROUP=m7group1
+M7SECURITY_USER2=m7user2
+M7SECURITY_USER2_PASS=m7user2
+M7SECURITY_USER2_GROUP=m7group1
+M7SECURITY_USER3=m7user3
+M7SECURITY_USER3_PASS=m7user3
+M7SECURITY_USER3_GROUP=m7group2
+M7SECURITY_USER4=m7user4
+M7SECURITY_USER4_PASS=m7user4
+M7SECURITY_USER4_GROUP=m7group1,m7group2
+
+##################################################################################
+# Test users used by File ACE security tests. Ten regular users are needed
+# For group configuration, please look at Smoke Test Setup Guide
+##################################################################################
+FACE_USER1=fuser1
+FACE_USER1_PASS=fuser1
+FACE_USER1_GROUP=fgroup1
+FACE_USER2=fuser2
+FACE_USER2_PASS=fuser2
+FACE_USER2_GROUP=fgroup1
+FACE_USER3=fuser3
+FACE_USER3_PASS=fuser3
+FACE_USER3_GROUP=fgroup2
+FACE_USER4=fuser4
+FACE_USER4_PASS=fuser4
+FACE_USER4_GROUP=fgroup2
+FACE_USER5=fuser5
+FACE_USER5_PASS=fuser5
+FACE_USER5_GROUP=fgroup3
+FACE_USER6=fuser6
+FACE_USER6_PASS=fuser6
+FACE_USER6_GROUP=fgroup3
+FACE_USER7=fuser7
+FACE_USER7_PASS=fuser7
+FACE_USER7_GROUP=fgroup1,fgroup2
+FACE_USER8=fuser8
+FACE_USER8_PASS=fuser8
+FACE_USER8_GROUP=fgroup2,fgroup3
+FACE_USER9=fuser9
+FACE_USER9_PASS=fuser9
+FACE_USER9_GROUP=fgroup3,fgroup1
+FACE_USER10=fuser10
+FACE_USER10_PASS=fuser10
+FACE_USER10_GROUP=fgroup1,fgroup2,fgroup3
+
+# MapR installation dir
+########################################
+MAPR_HOME=/opt/mapr
+########################################
+
+########################################
+# SelfHost MountPath
+########################################
+SELFHOST_MOUNTPATH=/home/MAPRTECH/qa
+
+########################################
+# hive server node
+########################################
+HIVE_SERVER=127.0.0.1:10000
+HIVE_USER=mapr
+HIVE_PASSW=mapr
+# comma separated list of nodes where hiveserver2 is configured
+HIVESERVER2_NODES=localhost
+HIVESERVER2_DEFAULT_PORT=10000
+# comma separated list of nodes where hivemetastore is configured
+HIVEMETASTORE_NODES=localhost
+HIVEMETASTORE_DEFAULT_PORT=9083
+# comma separated list of nodes where hivewebhcat is configured
+WEBHCAT_NODES=localhost
+WEBHCAT_DEFAULT_PORT=50111
+########################################
+# path to kerberos keytab used by hive
+HIVE_KERBEROS_KEYTAB=/opt/mapr/conf/mapr.keytab
+########################################
+# mysql server node
+########################################
+MYSQL_SERVER=127.0.0.1:3306
+MYSQL_DB_NAME=metastore
+MYSQL_USER=root
+MYSQL_PASS=123456
+
+########################################
+# sqoop home
+########################################
+SQOOP_HOME=/opt/mapr/sqoop/sqoop-1.4.6/
+
+########################################
+# hive home
+########################################
+HIVE_HOME=/opt/mapr/hive/hive-2.1/
+########################################
+# pig home
+########################################
+PIG_HOME=/opt/mapr/pig/pig-0.16/
+########################################
+# oozie
+########################################
+OOZIE_HOME=/opt/mapr/oozie/oozie-
+OOZIE_URL=http://perfnode166.perf.lab:11000/oozie
+SPARK_PRODUCER_URL=http://repository.mapr.com/nexus/content/groups/mapr-public/org/apache/spark/spark-streaming-kafka-producer_2.11/2.1.0-mapr-1710/spark-streaming-kafka-producer_2.11-2.1.0-mapr-1710.jar
+########################################
+# OOZIE KERBEROS PROPERTIES
+########################################
+OOZIE_AUTHENTICATION_PRINCIPAL=oozie.authentication.kerberos.principal
+OOZIE_SERVICE_HADOOP_PRINCIPAL=oozie.service.HadoopAccessorService.kerberos.principal
+LOCAL_REALM=local.realm
+#############################################
+# Secure and Unsecure cluster names and Ips
+#############################################
+UNSECURE_CLUSTER_NAME=ATSnonsecure
+UNSECURE_CLUSTER_IP=x.x.x.x
+SECURE_CLUSTER_NAME=secureATS
+SECURE_CLUSTER_IP=x.x.x.x
+########################################
+# MapR Client
+########################################
+MAPR_CLIENT=x.x.x.x
+########################################
+# Sasl users
+########################################
+SASL_USER1=userA
+SASL_USER1_PASS=mapr
+SASL_USER2=mapruser1
+SASL_USER2_PASS=mapr
+########################################
+# Kerberos user
+########################################
+KERBEROS_USER=kuser1
+
+#######################################
+#  VIP &amp; NFS Tests IPs
+#######################################
+VIP_START_IP=
+VIP_END_IP=
+VIP_NETMASK=
+VIP_PREF_MAC=x:x:x:x:x:x
+VIP_PREF_MAC_IP=x.x.x.x
+#VIP_PREF_MAC_IP should not be from VIP range but an IP bound to the interface with
+# mac VIP_PREF_MAC on one of the nodes in the cluster.
+NFS_SPECIFIC_CLIENT=x.x.x.x
+NFS_REMOTE_CLIENT=x.x.x.x
+CIDR_NOTATION=x.x.x.x/x
+CIDR_VALID_IP= x.x.x.x
+REMOTE_CLUSTER_NAME=X
+REMOTE_CLUSTER_CLDB_IP=x.x.x.x
+REMOTE_CLUSTER_CLDB_IP_LIST=x.x.x.x,x.x.x.x
+NFS_EDGE_SERVER=x.x.x.x
+
+############################################
+# POSIX Client Tests
+############################################
+POSIX_CLIENT_NODE=x.x.x.x
+POSIX_CLIENT_SUSE_NODE=x.x.x.x
+POSIX_CLIENT_NODES_LIST=x.x.x.x,x.x.x.x
+POSIX_CLIENT_LICENSETEST_IPs=x.x.x.x,x.x.x.x,x.x.x.x,x.x.x.x,x.x.x.x,x.x.x.x,x.x.x.x
+POSIX_CLIENT_LICENSETEST_EXTRA_IP=x.x.x.x
+FUSE_SERVICE_TYPE=platinum
+
+#########################################
+# M7 REPLICATION CLUSTER
+#########################################
+REPLICATION_CLUSTER1_NAME=xxxx
+REPLICATION_CLUSTER1_CLDB_IP_LIST=x.x.x.x
+REPLICATION_CLUSTER1_NEW_GATEWAY_CLDB_IP=x.x.x.x
+REPLICATION_CLUSTER1_INVALID_GATEWAY_IP=x.x.x.x
+REPLICATION_CLUSTER2_NAME=xxxx
+REPLICATION_CLUSTER2_CLDB_IP_LIST=x.x.x.x
+REPLICATION_CLUSTER3_NAME=xxxx
+REPLICATION_CLUSTER3_CLDB_IP_LIST=x.x.x.x
+
+CUSTOM_REPLICATION_CLUSTER1_NAME=x.x.x.x
+CUSTOM_REPLICATION_CLUSTER1_CLDB_IP_LIST=x.x.x.x
+CUSTOM_REPLICATION_CLUSTER2_NAME=x.x.x.x
+CUSTOM_REPLICATION_CLUSTER2_CLDB_IP_LIST=x.x.x.x
+
+SLAVE_CLUSTER_GATEWAY_IPS=x.x.x.x
+MASTER_CLUSTER_GATEWAY_IPS=x.x.x.x
+REPLICATION_DNS_SERVER_IP=x.x.x.x
+REPLICATION_DNS_ZONE_FILE=xxxx
+
+#########################################
+# REST IMPERSONATION TYPE
+#########################################
+REST_IMPERSONATION_TYPE=SIMPLE
+REST_IMPERSONATION_ENABLED=FALSE
+
+#########################################
+# ES SETUP
+#########################################
+ES_VERSION=2.2.0
+ES_ZIP_INSTALL_DIR=/root/elasticsearch/elasticsearch-2.2.0/
+ES_NODES=x.x.x.x
+ES_REST_PORT=9200
+ES_INSTALLED=false
+ES_UNICAST_DISCOVERY=false
+ES_UNICAST_HOSTS=x.x.x.x
+ES_CLUSTER_NAME=yyyy
+GATEWAY_NODES=x.x.x.x
+GATEWAY_INSTALLED=false
+MAPR_CLUSTER_NAME=xxxx
+#for Zip install
+ES_INSTALL_SOURCE_ZIP=https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/2.2.0/elasticsearch-2.2.0.zip
+KIBANA_INSTALL_SOURCE_ZIP=https://download.elastic.co/kibana/kibana/kibana-4.4.1-linux-x64.tar.gz
+#for rpm install
+ES_INSTALL_SOURCE_RPM=https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/2.2.0/elasticsearch-2.2.0.rpm
+KIBANA_INSTALL_SOURCE_RPM=http://packages.elastic.co/kibana/4.4/centos/kibana-4.4.1-1.x86_64.rpm
+KIBANA_INSTALL_KEY=http://packages.elastic.co/GPG-KEY-elasticsearch
+CLDB_NODES=x.x.x.x
+CONFIGURE_DNS=false
+DNS_NAMESERVER_NODE=x.x.x.x
+DNS_DOMAIN=atsdomain.com
+LOG_MODE=none
+ATS_ROOT=PATH_TO_OLD_ATS_DIR
+ES_CONVERSION_CLASS=M7ESConverter
+ES_CONVERSION_JAR=/ESTest.jar
+# Run All Tests with Large rows/cf&apos;s/cols,
+# values can be small medium and large
+DATA_LOAD=small
+
+##########################################
+# ES LONGEVITY
+##########################################
+MAX_NUM_ROWS=500
+MAX_NUM_THREADS=50
+MAX_NUM_CF=5
+MAX_NUM_QAL=10
+MAX_VALUE_SIZE=100
+MAX_BATCH_SIZE=20
+AUTO_FLUSH=true
+MAX_KEY_SIZE=32
+MAX_NUM_TABLES=1
+
+#########################################
+# ES DEV SETUP
+#########################################
+DEV_ES_NODES=10.10.10.87
+DEV_ES_REST_PORT=9200
+DEV_ES_HOME=/opt/elasticsearch-1.4.4
+DEV_ES_LOCAL_NAME=xxx
+
+###########################################
+# SPARK SETUP
+###########################################
+SPARK_VERSION=2.1.0
+SPARK_STANDALONE_MASTER=yarn
+DEPLOY_MODE=client
+SPARK_HOME=/opt/mapr/spark/spark-2.1.0/
+
+# Timeout for Spark tests in seconds.
+# If spark job runs longer than timeout then test will be marked as failed.
+SPARK_TESTS_TIMEOUT=1200
+
+#########################################
+# Control failure parameter
+#########################################
+TCP_SYN_RETRIES=4
+MAX_THREADS=1
+NUM_CONTAINERS=50
+CHUNK_SIZE=268435456
+MNT_PNT=/tmp/mapr
+NFS_RMT_CLNT=x.x.x.x
+NFS_RMT_MNT_PATH=/tmp/mapr
+CTRL_SETUP_REQUIRED=true
+
+###########################################
+# Myriad specific parameters
+###########################################
+MYRIAD_HOME=/opt/mapr/myriad/myriad-0.1
+MESOS_LIB_PATH=/usr/local/lib/libmesos.so
+MARATHON_HOST=x.x.x.x:8080
+MESOS_HOST=x.x.x.x:5050
+MYRIAD_PORT=8192
+MYRIAD_DNS_HOST=x.x.x.x
+
+###########################################
+# Kafka specific parameters
+###########################################
+KAFKA_HOME=/opt/mapr/kafka/kafka-0.9.0
+KAFKA_BROKERS=broker1:7645,broker2:7645,..&lt;broker:port&gt;
+KAFKA_ZOOKEEPERS=&lt;zookeeper1:port,zookeeper2:port..&gt;
+REMOTE_KAFKA_HOME=/root/kafka_2.11-0.9.0.0
+
+###########################################
+# Kafka REST specific parameters
+###########################################
+KAFKA_REST_URLS=&lt;host1:port1,host2:port2..&gt;
+# HTTPS parameters
+SSL_CLIENT_KEYSTORE_LOCATION=&quot;???&quot;
+SSL_CLIENT_KEYSTORE_PASSWORD=&quot;???&quot;
+SSL_CLIENT_KEY_PASSWORD=&quot;???&quot;
+
+###########################################
+# Kafka Connect specific parameters
+###########################################
+KAFKA_CONNECT_URLS=localhost:8083
+KAFKA_CONNECT_TEST_STREAM=/kafka_connect_test_stream
+MYSQL_KAFKA_CONNECT_DB=kafka_connect_db
+
+############################################
+#Mirror specific parameters
+############################################
+RWMIRROR_USE_OLDER_VOLUMES=false
+RWMIRROR_OLDER_VOLUME_PREFIX=x
+RWMIRROR_NUMBER_OF_OLDER_VOLS=0
+NUMBER_OF_MIRROR_VOLS=1
+RWMIRROR_CONVERT_FLAG=true
+SRC_CLUSTER_NAME=x
+SRC_CLDB_IPS_LIST=x.x.x.x,x.x.x.x
+SRC_MFS_IP_LIST=x.x.x.x,x.x.x.x
+
+############################################
+#Multicluster configuration
+############################################
+CLUSTER1_NAME=xxx
+CLUSTER1_CLDB_IP_LIST=x.x.x.x
+CLUSTER2_NAME=xxx
+CLUSTER2_CLDB_IP_LIST=x.x.x.x
+
+########################################
+# Object pools configs
+########################################
+OBJECTPOOLS_CLOUD_URL=http://10.10.101.122:9000
+OBJECTPOOLS_CLOUD_CREDENTIALS=28FBLWB8KPgYj83kyRVIWlvFGptUzuWUDVab/sJe
+###########################################
+#### FileMigrate configuration
+# Default: the-team
+# Access key: AKIAJPYA27PSBE66RUVA
+# Secret key: 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
+# Note: For internal use only
+###########################################
+AWS_ACCESS_KEY=AKIAJPYA27PSBE66RUVA
+AWS_SECRET_KEY=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
+FILEMIGRATE_HOME=/opt/mapr/filemigrate/filemigrate-1.0.0
+FILEMIGRATE_PROPS_FILE=/var/mapr/filemigrate/FileMigrate.properties
+FILEMIGRATE_AWS_REGION=xxx
+PROXY_HOST=xxx
+PROXY_PORT=xxx
+PROXY_USERNAME=xxx
+PROXY_PASSWORD=xxx
+########################################
+# Impala main configuration
+########################################
+IMPALA_SERVER_HOST=x.x.x.x
+IMPALA_SERVER_PORT=21050</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-2-cldb-list</id>
+      <name>cluster-2-cldb-list</name>
+      <comment></comment>
+      <content>10.10.88.156,10.10.88.157</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-2-clients</id>
+      <name>cluster-2-clients</name>
+      <comment></comment>
+      <content>10.10.108.107</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-2-name</id>
+      <name>cluster-2-name</name>
+      <comment></comment>
+      <content>STRESS-REPLICA</content>
       <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
     </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
     <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
@@ -23,7 +948,33 @@
       <name>cluster-2-roles</name>
       <comment></comment>
       <content>10.10.88.157,mapr-cldb,mapr-fileserver,mapr-webserver,mapr-webserver2,mapr-zookeeper,mapr-resourcemanager,mapr-nodemanager,mapr-historyserver,mapr-opentsdb,mapr-grafana,mapr-collectd,mapr-gateway,mapr-drill-1*
+10.10.88.156,mapr-cldb,mapr-fileserver,mapr-webserver,mapr-webserver2,mapr-zookeeper,mapr-resourcemanager,mapr-nodemanager,mapr-opentsdb,mapr-grafana,mapr-collectd,mapr-gateway,mapr-drill-1*
+10.10.88.107,mapr-client
 </content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>cluster-2-zk-list</id>
+      <name>cluster-2-zk-list</name>
+      <comment></comment>
+      <content>10.10.88.156,10.10.88.157</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>jenkins-client-setup-ssh-config</id>
+      <name>jenkins-client-setup-ssh-config</name>
+      <comment></comment>
+      <content>Host github.com
+   User git
+   IdentityFile /root/jenkins-client-setup/id_rsa
+   StrictHostKeyChecking no</content>
+      <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
+    </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+    <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
+      <id>k8s-node-list</id>
+      <name>k8s-node-list</name>
+      <comment></comment>
+      <content>10.10.10.220,10.10.108.107</content>
       <providerId>org.jenkinsci.plugins.configfiles.custom.CustomConfig</providerId>
     </org.jenkinsci.plugins.configfiles.custom.CustomConfig>
     <org.jenkinsci.plugins.configfiles.custom.CustomConfig>
@@ -48,7 +999,7 @@ protect=1
 [QA-MASTER-Artifactory]
 name=MapR Master Artifactory Repository
 baseurl=http://artifactory.devops.lab/artifactory/core-rpm/master/
-enabled=0
+enabled=1
 gpgcheck=0
 protect=1
 
@@ -97,7 +1048,7 @@ protect=1
 [QA-6.0.0-Artifactory]
 name=MapR v6.0.0 Artifactory Repository
 baseurl=http://artifactory.devops.lab/artifactory/prestage/releases-dev/v6.0.0/redhat/
-enabled=1
+enabled=0
 gpgcheck=0
 protect=1
 

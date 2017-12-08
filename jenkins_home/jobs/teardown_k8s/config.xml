@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.15">
+  <description>resets k8s</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers/>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.41">
+    <script>pipeline {
+
+  // agent defines where the pipeline will run.
+  agent any
+  environment {
+    SECURE = &quot;TRUE&quot;
+  }
+  stages {
+    stage(&apos;install-k8s stage 1 - installing src k8s&apos;) {
+      steps {
+          ws(&apos;/var/jenkins_home/stress-pipeline/kube-scripts&apos;) {
+              script {
+                  try {
+                        sh &apos;./bin/install-kube teardown `cat cluster-1-clients`&apos;
+                  } catch (err) {
+                      
+                  }
+              }
+          }   
+      }
+    }
+    stage(&apos;install-k8s stage 2 - installing replica k8s&apos;) {
+      steps {
+        ws(&apos;/var/jenkins_home/stress-pipeline/kube-scripts&apos;) {
+            script {
+                  try {
+                        sh &apos;./bin/install-kube teardown `cat cluster-2-clients`&apos;
+                  } catch (err) {
+                      
+                  }
+              }
+          } 
+      }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
