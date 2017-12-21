@@ -1,6 +1,15 @@
-  node {
+pipeline {
+
+  // agent defines where the pipeline will run.
+  agent any
+  environment {
+    SECURE = "TRUE"
+  }
+  stages {
+    
     //TODO parameterize cluster name 
     stage('install-docker stage 1 - installing src docker') {
+      steps {
           ws('/var/jenkins_home/ATS-pipeline/kube-scripts') {
               script {
                   try {
@@ -12,5 +21,7 @@
                   }
               }
           }   
+      }
     }
+  }
 }
