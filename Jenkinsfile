@@ -5,6 +5,7 @@ pipeline {
   environment {
     SECURE = "TRUE"
   }
+  node {
   stages {
     //TODO parameterize cluster name 
     stage('install-docker stage 1 - installing src docker') {
@@ -22,5 +23,6 @@ pipeline {
           }   
       }
     }
+  }
   }
 }
