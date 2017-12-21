@@ -1,10 +1,3 @@
-pipeline {
-
-  // agent defines where the pipeline will run.
-  agent any
-  environment {
-    SECURE = "TRUE"
-  }
   node {
   stages {
     //TODO parameterize cluster name 
@@ -23,6 +16,5 @@ pipeline {
           }   
       }
     }
-  }
   }
 }
