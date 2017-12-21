@@ -1,7 +1,6 @@
   node {
     //TODO parameterize cluster name 
     stage('install-docker stage 1 - installing src docker') {
-      steps {
           ws('/var/jenkins_home/ATS-pipeline/kube-scripts') {
               script {
                   try {
@@ -13,6 +12,5 @@
                   }
               }
           }   
-      }
     }
 }
