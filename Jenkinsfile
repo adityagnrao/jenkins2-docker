@@ -3,34 +3,23 @@ pipeline {
   // agent defines where the pipeline will run.
   agent any
   environment {
-    SECURE = &quot;TRUE&quot;
+    SECURE = "TRUE"
   }
   stages {
-    //TODO parameterize cluster name
-    stage(&apos;install-docker stage 1 - installing src docker&apos;) {
+    //TODO parameterize cluster name 
+    stage('install-docker stage 1 - installing src docker') {
       steps {
-          ws(&apos;/var/jenkins_home/stress-pipeline/kube-scripts&apos;) {
+          ws('/var/jenkins_home/ATS-pipeline/kube-scripts') {
               script {
                   try {
-                        sh &apos;./bin/install-kube preCheck `cat cluster-1-clients`&apos;
+                      def clientNodes = sh(returnStdout: true, script: 'cat ATS-cluster-1-clients').trim().replaceAll(","," ")
+                    //   sh "echo ${clientNodes}"
+                      sh "./bin/install-kube preCheck `echo ${clientNodes}`"
                   } catch (err) {
-
+                      //TODO only catch if docker is already installed exit
                   }
               }
-          }
-      }
-    }
-    stage(&apos;install-docker stage 2 - installing replica docker&apos;) {
-      steps {
-        ws(&apos;/var/jenkins_home/stress-pipeline/kube-scripts&apos;) {
-            script {
-                  try {
-                        sh &apos;./bin/install-kube preCheck `cat cluster-2-clients`&apos;
-                  } catch (err) {
-
-                  }
-              }
-          }
+          }   
       }
     }
   }
